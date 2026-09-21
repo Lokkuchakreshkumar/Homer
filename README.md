@@ -48,15 +48,35 @@ Homer uses a lightweight backend proxy to securely execute AI rankings:
 
 ---
 
-## 🛠️ Building From Source
+## 🛠️ Building & Running Locally
 
-If you want to modify or compile the extension yourself:
-
+### Extension
 ```bash
 cd extension
 npm install
 npm run build
 ```
+
+### Server (Deploy to Render or Run Locally)
+```bash
+cd server
+npm install
+cp .env.example .env
+npm run dev
+```
+
+---
+
+## 🚀 Deploying Server to Render
+
+The `server/` directory is 100% ready for instant deployment to [Render](https://render.com):
+1. Create a new **Web Service** on Render and point it to this repo.
+2. Set Root Directory to `server` (or let Render use `server/Dockerfile` / `server/render.yaml`).
+3. Add your `TYPESAFE_API_KEY` in Render environment variables.
+4. Render will provide a live HTTPS URL (e.g., `https://your-homer-server.onrender.com`).
+5. In Homer extension popup → **Advanced Configuration** → paste your Render URL in **Proxy Service URL**.
+
+---
 
 ## Features
 
@@ -64,4 +84,5 @@ npm run build
 - **Pure White Monochrome Aesthetic**: Clean `#ffffff` / `#09090b` UI with `#e4e4e7` borders.
 - **Keyboard Shortcuts**: Native interception for `Ctrl+F` / `Cmd+F`, `Enter` for next, `Shift+Enter` for previous, `Esc` to dismiss.
 - **Privacy & Controls**: Debounce sensitivity slider, ignore hosts lists, and proxy health telemetry.
+- **Interactive Playground**: Served directly at the server root (`http://127.0.0.1:8787/`) for sandbox testing.
 

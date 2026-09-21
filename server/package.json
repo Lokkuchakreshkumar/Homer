@@ -1,0 +1,22 @@
+{
+  "name": "homer-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Homer Server - Semantic Search Proxy for Render deployment",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env src/index.ts",
+    "dev": "node --env-file-if-exists=.env src/index.ts",
+    "test": "node --test 'test/**/*.test.ts'"
+  },
+  "dependencies": {
+    "@typesafe-ai/sdk": "^0.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "typescript": "^5.9.3"
+  }
+}

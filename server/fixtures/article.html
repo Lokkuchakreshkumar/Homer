@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Washington, D.C. — Jev fixture (semantic find)</title>
+    <style>
+      body { font: 16px/1.6 system-ui, sans-serif; max-width: 46rem; margin: 2rem auto; padding: 0 1rem; }
+      h1 { line-height: 1.2; }
+      .note { background: #f4f4f5; border-left: 4px solid #a1a1aa; padding: .75rem 1rem; font-size: .9rem; }
+      code { background: #f4f4f5; padding: .1rem .3rem; border-radius: 3px; }
+      aside { background: #fafafa; border: 1px solid #e4e4e7; padding: .75rem 1rem; }
+    </style>
+  </head>
+  <body>
+    <div class="note">
+      <p><strong>Semantic find fixture.</strong> Press <code>Ctrl+F</code> and search for
+      <code>where is whitehouse</code>. Three paragraphs below are about the answer, and only
+      one of them contains the string "White House":</p>
+      <ul>
+        <li><strong>Literal match</strong> — paragraph 1 says "White House" outright.</li>
+        <li><strong>Semantic match</strong> — paragraph 2 says "1600 Pennsylvania Avenue" and
+        "the president's official residence". No overlap with the typed query at all.</li>
+        <li><strong>Semantic match</strong> — paragraph 3 says "the Executive Mansion".</li>
+        <li><strong>Not a match</strong> — the last section is about the Metro and shares no meaning.</li>
+      </ul>
+      <p>Native <code>Ctrl+F</code> finds only the first. It also finds "whitehouse" nowhere if
+      you leave the space out, which is the case the interesting half of this feature exists for.</p>
+      <p>Try <code>who designed the president's house</code>, or something absent such as
+      <code>how do I renew a passport</code>, and the bar should say it found no answer rather
+      than highlighting the closest paragraph as if it had.</p>
+    </div>
+
+    <main>
+      <article>
+        <h1>Washington, D.C.</h1>
+
+        <p>Washington, D.C. is the capital city of the United States, named for George Washington
+        and founded in 1790 along the Potomac River. It is a compact city of monuments, museums,
+        and federal offices, and it is not part of any state.</p>
+
+        <p id="para-literal">The White House is the official residence and principal workplace of
+        the president of the United States. It has been the home of every president since John
+        Adams took up residence in 1800.</p>
+
+        <p id="para-semantic-address">The building sits at 1600 Pennsylvania Avenue NW, a short
+        walk from Lafayette Square. Its north front faces the avenue while its south front looks
+        out over the Ellipse, and the address has become shorthand for the presidency itself.</p>
+
+        <p id="para-semantic-mansion">Originally known as the Executive Mansion, the residence was
+        designed by James Hoban, an Irish-born architect who won the competition for the commission
+        in 1792. It was rebuilt after British forces set it alight in 1814.</p>
+
+        <p>The National Mall stretches west from the Capitol to the Lincoln Memorial, lined by the
+        Smithsonian museums. The Washington Monument, an obelisk of marble, stands at its centre and
+        remains the tallest structure in the city.</p>
+
+        <h2>Getting around</h2>
+
+        <p>The Washington Metro opened in 1976 and its vaulted concrete stations are recognisable by
+        their coffered ceilings. Fares are distance-based and paid with a SmarTrip card at the
+        faregate before boarding.</p>
+
+        <p>Traffic in the district is notoriously heavy on weekday mornings, and much of the street
+        parking near federal buildings is restricted to permit holders during business hours.</p>
+      </article>
+
+      <aside>
+        <p>This aside is deliberately ambiguous: it mentions the capital, the district, and the
+        federal government without answering any specific question, which makes it a useful check
+        that loose matches do not crowd out strong ones.</p>
+      </aside>
+    </main>
+  </body>
+</html>

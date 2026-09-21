@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: homer-server
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /v1/health
+    envVars:
+      - key: TYPESAFE_API_KEY
+        sync: false
+      - key: HOST
+        value: 0.0.0.0
+      - key: JEV_FAKE
+        value: 0

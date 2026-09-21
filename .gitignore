@@ -1,6 +1,8 @@
 node_modules/
+**/node_modules/
 .env
-extension/dist/
+.env*
+!.env.example
 stats.json
 *.log
 .DS_Store

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ad judgment fixture — Jev</title>
+    <style>
+      body { font: 16px/1.6 system-ui, sans-serif; margin: 0; padding: 1rem; }
+      main { max-width: 42rem; margin: 0 auto; }
+      .ad-container, .sponsored-card, .outbrain-widget, .promo-sticky {
+        background: repeating-linear-gradient(45deg, #fee2e2, #fee2e2 10px, #fecaca 10px, #fecaca 20px);
+        border: 1px dashed #dc2626; padding: .5rem; margin: .5rem 0; min-height: 60px;
+      }
+      .newsletter-overlay {
+        position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,.6);
+        color: #fff; display: grid; place-items: center; text-align: center;
+      }
+      .newsletter-overlay > div { background: #18181b; padding: 2rem; border-radius: 8px; }
+      .consent-dialog {
+        position: fixed; bottom: 0; left: 0; right: 0; z-index: 500; background: #f4f4f5;
+        border-top: 1px solid #d4d4d8; padding: .75rem 1rem;
+      }
+      .promo-sticky { position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; }
+      iframe { border: 0; }
+      .note { background: #eff6ff; border-left: 4px solid #3b82f6; padding: .75rem 1rem; font-size: .9rem; }
+      code { background: #f4f4f5; padding: .1rem .3rem; border-radius: 3px; }
+    </style>
+  </head>
+  <body>
+    <!--
+      Expectation fixture. Each interesting element carries data-expect, which the extension
+      never reads (it only looks at tag, id, class, role, aria-label, geometry and text).
+      The values are what the policy in server/src/ads.ts should produce:
+
+        data-expect="remove"  confident ad, outside main content, short text -> element.remove()
+        data-expect="hide"    ad-shaped but protected (inside main / long text / content veto)
+        data-expect="keep"    not an ad at all
+
+      data-j-function="true" marks the cases the offline stub judge gets WRONG and a real Jev
+      gets right. They are in the fixture on purpose: they are the reason the feature exists.
+    -->
+    <div class="note">
+      <p><strong>Ad judgment fixture.</strong> Elements are annotated with
+      <code>data-expect</code> so you can compare what the extension did against what was
+      intended. Red stripes mark the ad-shaped containers.</p>
+      <p>Four elements are marked <code>data-j-function="true"</code>: an unlabelled native
+      ad, a legitimate cookie-consent dialog, a promoted card, and a wrapped ad iframe.
+      The offline stub judge gets all four wrong — it sees no ad-ish keyword on the first,
+      a "cookie" keyword on the second, and only single-keyword confidence (a hide, not a
+      remove) on the last two. Jev's <code>no</code> criteria and full confidence scale
+      describe exactly these cases, which is the point.</p>
+    </div>
+
+    <!-- Expected: remove. Classic 728x90 leaderboard slot above the content. -->
+    <div id="ad-leaderboard" class="ad-container leaderboard" data-expect="remove" data-ad-category="adslot">
+      Advertisement
+    </div>
+
+    <!-- Expected: remove. Fixed full-viewport newsletter interstitial. -->
+    <div id="newsletter-modal" class="newsletter-overlay modal-popup" data-expect="remove" data-ad-category="overlay">
+      <div>
+        <h2>Subscribe to our newsletter</h2>
+        <p>Get the best of the week, every Friday. Sign up free.</p>
+        <button>Sign up</button>
+      </div>
+    </div>
+
+    <!-- Expected: remove. Promoted card outside the article, short text. The stub stops
+         at hide on single-keyword confidence, so this carries data-j-function. -->
+    <div id="sponsored-card-1" class="sponsored-card" data-expect="remove" data-ad-category="sponsored" data-j-function="true">
+      <span>Sponsored</span>
+      <p>Best VPN deals of the year — save 80% today.</p>
+    </div>
+
+    <!-- Expected: remove. Programmatic ad iframe. The wrapper collapses the inner frame,
+         so the stub sees one keyword (a hide); Jev reads the whole unit as a remove. -->
+    <div id="ad-iframe-wrap" data-expect="remove" data-ad-category="adslot" data-j-function="true">
+      <iframe id="google-ads-frame" src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" width="300" height="250" title="advertisement"></iframe>
+    </div>
+
+    <!-- Expected: hide. A paid feed widget, and its text runs past the 400-character cap,
+         so the removal floor applies whatever the model says. Deleting a node this wordy on
+         a wrong call is the failure mode the cap exists to prevent. -->
+    <aside id="outbrain-feed" class="outbrain-widget sponsored-feed" data-expect="hide" data-ad-category="sponsored">
+      <p>Sponsored content from around the web, selected by our commercial partners: twelve
+      things you never knew about kitchen knives, the holiday destinations that travel agents
+      keep to themselves, a gallery of reader photographs from this month's competition, and a
+      long read about why the price of coffee keeps climbing. These recommendations were paid
+      for and are not produced by our newsroom, though the links below are presented to look as
+      much like our own stories as the format allows.</p>
+    </aside>
+
+    <main>
+      <!-- Expected: keep. The article the reader came for. -->
+      <article>
+        <h1>A short article</h1>
+        <p>This paragraph is the article body. It is the reason the page was opened, and no
+        configuration of this extension should ever remove it. The content-veto question exists
+        to make that explicit rather than implied, and the removal floor refuses to delete text
+        this long even when the judge is confident.</p>
+        <p>A second paragraph, so the article is not a single node. Removing either one would
+        leave the reader with a visible hole and no way to tell what used to be there.</p>
+      </article>
+
+      <!-- Expected: hide, not remove. Sponsored, but inside main content. -->
+      <div id="sponsored-in-feed" class="sponsored-card" data-expect="hide" data-ad-category="sponsored">
+        <span>Promoted</span>
+        <p>A promoted post in the feed.</p>
+      </div>
+
+      <!-- Expected: hide. A captioned native image unit inside main: the "Sponsored"
+           figcaption plus ad ratios corroborate, but main content is hide-at-most. -->
+      <figure id="img-native-caption" data-expect="hide" data-ad-category="sponsored">
+        <img src="/images/promo-headphones.jpg" alt="New wireless headphones">
+        <figcaption>Sponsored</figcaption>
+      </figure>
+
+      <!-- Expected: keep. An editorial figure: relative source, plain alt, plain
+           dimensions, no disclosure anywhere nearby. -->
+      <figure id="img-editorial" data-expect="keep">
+        <img src="/photos/mountain-dawn.jpg" alt="Mountain at dawn">
+        <figcaption>A mountain at dawn</figcaption>
+      </figure>
+
+      <!-- Expected: keep. An image beside an article *about* advertising: the nearby
+           "sponsored" mention fires proximity, but it stands alone, so the unit is
+           held for corroboration and never shortlisted. -->
+      <p id="ads-article-note">This article discusses sponsored content trends in local news.</p>
+      <div id="img-chart-note" data-expect="keep">
+        <img src="/photos/chart.png" alt="Chart of quarterly revenue">
+      </div>
+
+      <!-- Expected: keep. A legitimate embed, not advertising. -->
+      <iframe id="youtube-player" src="https://www.youtube.com/embed/dQw4w9WgXcQ" width="560" height="315" title="A documentary about the city" data-expect="keep"></iframe>
+    </main>
+
+    <!-- Expected: keep. A consent dialog that only asks for a choice. This is the hardest
+         false positive in the fixture and needs Jev's `no` criteria to reject. -->
+    <div id="cookie-consent" class="consent-dialog" role="dialog" aria-label="Privacy choices"
+         data-expect="keep" data-j-function="true">
+      <p>We use cookies to keep you signed in and to measure which pages are read. Choose
+      accept or reject — nothing changes either way except the measurement.</p>
+      <button>Accept</button> <button>Reject</button>
+    </div>
+
+    <!-- Expected: keep. A brand logo: relative source, plain alt, modest non-ad
+         dimensions, no disclosure anywhere. Zero image signals, never shortlisted. -->
+    <div id="site-brand" data-expect="keep">
+      <img src="/images/logo.png" alt="Acme News logo" width="120" height="40">
+    </div>
+
+    <!-- Expected: keep. Navigation is never an ad. -->
+    <nav id="site-nav" aria-label="Main" data-expect="keep">
+      <a href="#one">Home</a> <a href="#two">World</a> <a href="#three">Business</a>
+    </nav>
+
+    <!-- Expected: remove. A sticky promotional bar. -->
+    <div id="promo-sticky" class="promo-sticky" data-expect="remove" data-ad-category="overlay">
+      <p>50% off your first year — claim the offer before it ends.</p>
+    </div>
+
+    <!-- Expected: remove — but only with a real Jev. An unlabelled native ad: no ad word
+         anywhere in its identifiers or text, so the shortlist reaches it through the one
+         piece of structural evidence it has, a standard ad size. The stub then has no
+         keyword to match and returns "not an ad", which is exactly the gap Jev fills. -->
+    <div id="story-teaser-2" class="feed-item" style="width:300px;height:250px"
+         data-expect="remove" data-ad-category="sponsored" data-j-function="true">
+      <p>The surprising history of the shipping container, and how a steel box rewrote global
+      trade in a single decade.</p>
+      <a href="#">Read the full story</a>
+    </div>
+
+    <!-- Expected: remove. A bare image ad: ad-network host plus disclosure in alt. -->
+    <div id="img-ad-network" data-expect="remove" data-ad-category="adslot">
+      <img src="https://ads.doubleclick.net/cre/300x250.jpg?imp=1" alt="Advertisement">
+    </div>
+
+    <!-- Expected: remove. A background-image creative with disclosure in its own text. -->
+    <div id="img-bg-promo" style="background-image: url('https://cdn.ads.example.com/b.jpg')"
+         data-expect="remove" data-ad-category="adslot">
+      <p>Sponsored deals inside, today only.</p>
+    </div>
+
+    <!-- Expected: remove. A responsive picture creative: the srcset host names an ad
+         network and the alt discloses advertising. Two weak image signals corroborate,
+         so the unit shortlists; host plus disclosure convince the stub to remove it. -->
+    <picture id="img-picture-srcset" data-expect="remove" data-ad-category="adslot">
+      <source srcset="https://ads.doubleclick.net/cre/p-2x.jpg 2x, https://ads.doubleclick.net/cre/p-1x.jpg 1x">
+      <img src="https://ads.doubleclick.net/cre/p-1x.jpg" alt="Advertisement">
+    </picture>
+  </body>
+</html>
