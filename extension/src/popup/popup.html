@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Homer</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div id="root">
+      <!-- Header -->
+      <header class="header">
+        <div class="brand">
+          <div class="logo-mark">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 4v16M19 4v16M5 12h14" />
+            </svg>
+          </div>
+          <div class="brand-info">
+            <span class="brand-title">Homer</span>
+            <div class="proxy-badge" id="proxy-status">
+              <span class="status-dot"></span>
+              <span class="status-text">Connecting...</span>
+            </div>
+          </div>
+        </div>
+
+        <a href="http://127.0.0.1:8787/" target="_blank" class="icon-link" title="Open Web Dashboard & Playground">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </header>
+
+      <!-- Primary Action: Open Find Bar -->
+      <section class="hero-card">
+        <button id="btn-open-find" class="btn btn-hero">
+          <span class="btn-hero-content">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <span>Open Find Bar</span>
+          </span>
+          <kbd class="shortcut-tag" id="shortcut-display">Ctrl+F</kbd>
+        </button>
+        <div class="hero-status">
+          <span class="host-text" id="tab-host">Checking tab...</span>
+          <span class="cost-text" id="session-cost">$0.00</span>
+        </div>
+      </section>
+
+      <!-- Core Preferences -->
+      <section class="section-card">
+        <div class="setting-row">
+          <div class="setting-info">
+            <label for="find-enabled" class="setting-label">Semantic Find</label>
+            <span class="setting-sub">Enable conceptual search on pages</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="find-enabled" />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <label for="takeover" class="setting-label">Intercept Shortcut</label>
+            <span class="setting-sub" id="takeover-sub">Trigger Homer on Ctrl+F</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="takeover" />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <label for="debounce" class="setting-label">Debounce Sensitivity</label>
+            <span class="slider-val" id="debounce-val">300 ms</span>
+          </div>
+          <input type="range" id="debounce" min="50" max="1500" step="50" value="300" class="range-input" />
+        </div>
+      </section>
+
+      <!-- Advanced Settings Accordion -->
+      <details class="advanced-details" id="advanced-details">
+        <summary class="advanced-summary">
+          <span>Advanced Configuration</span>
+          <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </summary>
+        <div class="advanced-content">
+          <div class="input-group">
+            <label for="proxy-url" class="field-label">Proxy Service URL</label>
+            <input type="text" id="proxy-url" spellcheck="false" class="text-input" placeholder="http://127.0.0.1:8787" />
+          </div>
+
+          <div class="input-group">
+            <label for="never-send" class="field-label">Never send content from hosts <span class="field-sub">(one per line)</span></label>
+            <textarea id="never-send" rows="2" spellcheck="false" class="text-input" placeholder="e.g. bank.com&#10;internal.corp"></textarea>
+          </div>
+
+          <div class="input-group">
+            <label for="native-find" class="field-label">Allow native browser find on hosts <span class="field-sub">(one per line)</span></label>
+            <textarea id="native-find" rows="2" spellcheck="false" class="text-input" placeholder="e.g. docs.google.com&#10;notion.so"></textarea>
+          </div>
+
+          <div class="telemetry-box" id="telemetry-info">
+            <span class="telemetry-text">Checking proxy telemetry...</span>
+          </div>
+        </div>
+      </details>
+
+      <!-- Notification Toast -->
+      <div class="error" id="error"></div>
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>

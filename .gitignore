@@ -1,0 +1,12 @@
+node_modules/
+.env
+extension/dist/
+stats.json
+*.log
+.DS_Store
+
+jev-find-ads/
+jev-find-ads-impl/
+.scratch/
+.agents/
+.claude/
