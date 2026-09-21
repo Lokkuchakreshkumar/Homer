@@ -1,54 +1,42 @@
-# Homer 🔍
+# Homer
 
-> **AI-powered browser extension for conceptual find and semantic search.**
-> Search webpages by meaning, concept, and intent — not just exact keywords.
+Homer is a browser extension that finds text on web pages by meaning rather than exact string matches.
 
----
+## Quick install
 
-## ⚡ Quick Install (Load Unpacked in Chrome)
+You do not need Node.js or a build toolchain to run Homer. The pre-built extension lives in `extension/dist/`.
 
-You do **not** need Node.js or any build tools to install and use Homer. A pre-compiled build is included in the `extension/dist/` directory.
-
-1. **Clone or Download** this repository:
+1. Clone the repository:
    ```bash
    git clone https://github.com/Lokkuchakreshkumar/Homer.git
    ```
-2. Open Google Chrome (or any Chromium browser like Brave, Edge, Arc) and go to:
-   ```text
-   chrome://extensions
-   ```
-3. Enable **Developer mode** using the toggle in the top-right corner.
-4. Click **Load unpacked** in the top-left corner.
-5. Select the **`extension/dist`** folder inside this repository.
-6. Pin **Homer** to your browser toolbar!
+2. Open `chrome://extensions` in Chrome, Brave, or Edge.
+3. Turn on the **Developer mode** toggle.
+4. Click **Load unpacked**.
+5. Select the `extension/dist` directory.
+6. Pin Homer to the browser toolbar.
 
----
+## Connect the backend proxy
 
-## 🌐 Connecting to the Backend Proxy
+The extension connects to a local or remote proxy server to score passages.
 
-Homer uses a lightweight backend proxy to securely execute AI rankings:
+1. Click the Homer icon in the toolbar.
+2. Click **Advanced Configuration**.
+3. Set **Proxy Service URL**:
+   - For a hosted Render instance: `https://your-service.onrender.com`
+   - For local development: `http://127.0.0.1:8787`
+4. The status badge indicates connection state.
 
-1. Click the **Homer** icon in your toolbar to open the extension popup.
-2. Click **Advanced Configuration** to reveal the proxy settings.
-3. Enter your backend URL in **Proxy Service URL**:
-   - If using a hosted Render deployment: `https://your-service.onrender.com`
-   - If using local dev server: `http://127.0.0.1:8787`
-4. The status indicator will turn online once connected.
+## Usage
 
----
+- Press `Ctrl+F` (`Cmd+F` on macOS) on any page to open the Homer bar.
+- Type a conceptual question or query, such as "where is the corporate headquarters" or "refund policy details".
+- Homer scores passages on the active page and highlights the strongest matches.
+- `Enter` steps to the next match.
+- `Shift+Enter` steps to the previous match.
+- `Esc` closes the bar.
 
-## ⌨️ How to Use
-
-- **Activate**: Press **`Ctrl+F`** (or **`Cmd+F`** on macOS) on any webpage.
-- **Search by Meaning**: Type naturally (e.g., *"where is the CEO's office"*, *"how does pricing work"*). Homer highlights the most relevant passages even when exact words differ.
-- **Navigate**:
-  - `Enter`: Next match
-  - `Shift + Enter`: Previous match
-  - `Esc`: Close search bar
-
----
-
-## 🛠️ Building & Running Locally
+## Build and run locally
 
 ### Extension
 ```bash
@@ -57,7 +45,7 @@ npm install
 npm run build
 ```
 
-### Server (Deploy to Render or Run Locally)
+### Server
 ```bash
 cd server
 npm install
@@ -65,24 +53,21 @@ cp .env.example .env
 npm run dev
 ```
 
----
+The local proxy listens on `http://127.0.0.1:8787` and serves an interactive search sandbox at `http://127.0.0.1:8787/`.
 
-## 🚀 Deploying Server to Render
+## Deploy the server to Render
 
-The `server/` directory is 100% ready for instant deployment to [Render](https://render.com):
-1. Create a new **Web Service** on Render and point it to this repo.
-2. Set Root Directory to `server` (or let Render use `server/Dockerfile` / `server/render.yaml`).
-3. Add your `TYPESAFE_API_KEY` in Render environment variables.
-4. Render will provide a live HTTPS URL (e.g., `https://your-homer-server.onrender.com`).
-5. In Homer extension popup → **Advanced Configuration** → paste your Render URL in **Proxy Service URL**.
+The `server/` directory contains `Dockerfile` and `render.yaml` configurations for Render:
 
----
+1. Create a **Web Service** on Render connected to this repository.
+2. Set the root directory to `server`.
+3. Add the `TYPESAFE_API_KEY` environment variable in the Render dashboard.
+4. Copy the assigned URL into the extension's **Proxy Service URL** setting.
 
-## Features
+## Capabilities
 
-- **Semantic Find**: Floating search bar running inside an encapsulated Shadow DOM.
-- **Pure White Monochrome Aesthetic**: Clean `#ffffff` / `#09090b` UI with `#e4e4e7` borders.
-- **Keyboard Shortcuts**: Native interception for `Ctrl+F` / `Cmd+F`, `Enter` for next, `Shift+Enter` for previous, `Esc` to dismiss.
-- **Privacy & Controls**: Debounce sensitivity slider, ignore hosts lists, and proxy health telemetry.
-- **Interactive Playground**: Served directly at the server root (`http://127.0.0.1:8787/`) for sandbox testing.
-
+- Shadow DOM isolation prevents host page CSS from altering the search bar.
+- Monochrome design system (`#ffffff`, `#09090b`, `#e4e4e7`).
+- Native keyboard interception for `Ctrl+F` and navigation keys.
+- Configurable debounce timeout and per-host exclusion lists.
+- Interactive test sandbox at `/` on the proxy server.
