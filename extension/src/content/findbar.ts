@@ -12,7 +12,7 @@
  * the content script hands back.
  */
 
-import type { SearchVerdict } from "../../../shared/wire.ts";
+import type { SearchVerdict } from "../../shared/wire.ts";
 
 export type FindBarIntent =
   | { readonly kind: "query"; readonly text: string }

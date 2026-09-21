@@ -7,8 +7,8 @@
  * so each search carries a generation and only the newest one is allowed to paint.
  */
 
-import type { SearchHit, SearchVerdict, UsageTotals } from "../../../shared/wire.ts";
-import { emptyUsage } from "../../../shared/wire.ts";
+import type { SearchHit, SearchVerdict, UsageTotals } from "../../shared/wire.ts";
+import { emptyUsage } from "../../shared/wire.ts";
 import { browserMeasurer, extractBlocks } from "../dom.ts";
 import type { ExtractedBlock } from "../dom.ts";
 import { Highlighter } from "./highlight.ts";

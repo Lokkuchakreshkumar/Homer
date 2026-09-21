@@ -10,7 +10,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { parseHTML } from "linkedom";
 
-import type { SearchHit } from "../../shared/wire.ts";
+import type { SearchHit } from "../shared/wire.ts";
 import { toTextBlock } from "../src/heuristics.ts";
 import type { ExtractedBlock } from "../src/dom.ts";
 import { partitionAnswer, resolveHitRanges } from "../src/content/search.ts";

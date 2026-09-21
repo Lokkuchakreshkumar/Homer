@@ -13,7 +13,7 @@ import assert from "node:assert/strict";
 import { extractBlocks, hasNearbyDisclosure, scanForAds } from "../src/dom.ts";
 import { describeElement } from "../src/dom.ts";
 import { candidateSelector, mayRemove } from "../src/heuristics.ts";
-import { AD_REMOVE_TEXT_CAP } from "../../shared/wire.ts";
+import { AD_REMOVE_TEXT_CAP } from "../shared/wire.ts";
 import { parseHTML } from "linkedom";
 import { ADS_LAYOUT, fixtureText, measurerFor, parseFixture } from "./harness.ts";
 

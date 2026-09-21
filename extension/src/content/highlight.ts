@@ -12,7 +12,7 @@
  * writes to the page's own `<head>` exactly once.
  */
 
-import type { MatchTier } from "../../../shared/wire.ts";
+import type { MatchTier } from "../../shared/wire.ts";
 
 export const HIGHLIGHT_STRONG = "jev-hit-strong";
 export const HIGHLIGHT_LOOSE = "jev-hit-loose";

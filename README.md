@@ -18,13 +18,15 @@ You do not need Node.js or a build toolchain to run Homer. The pre-built extensi
 
 ## Connect the backend proxy
 
-The extension connects to a local or remote proxy server to score passages.
+The extension is pre-configured with the default hosted proxy:
+`https://homer-3rx8.onrender.com`
 
+To change or inspect the connection:
 1. Click the Homer icon in the toolbar.
 2. Click **Advanced Configuration**.
-3. Set **Proxy Service URL**:
-   - For a hosted Render instance: `https://your-service.onrender.com`
-   - For local development: `http://127.0.0.1:8787`
+3. Inspect or edit **Proxy Service URL**:
+   - Hosted Render instance: `https://homer-3rx8.onrender.com`
+   - Local development: `http://127.0.0.1:8787`
 4. The status badge indicates connection state.
 
 ## Usage

@@ -60,12 +60,12 @@ export function measurerFor(table: Readonly<Record<string, Box>>): Measurer {
 
 /** Parse one of the fixture pages into a linkedom document. */
 export function parseFixture(name: string): Document {
-  const html = readFileSync(new URL(`../../fixtures/${name}`, import.meta.url), "utf8");
+  const html = readFileSync(new URL(`../../server/fixtures/${name}`, import.meta.url), "utf8");
   return parseHTML(html).document as unknown as Document;
 }
 
 export function fixtureText(name: string): string {
-  return readFileSync(new URL(`../../fixtures/${name}`, import.meta.url), "utf8");
+  return readFileSync(new URL(`../../server/fixtures/${name}`, import.meta.url), "utf8");
 }
 
 /**

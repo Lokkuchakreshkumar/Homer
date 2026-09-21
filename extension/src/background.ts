@@ -7,7 +7,7 @@
  * retry, which `sendMessage` already surfaces as an error.
  */
 
-import { mergeSettings } from "../../shared/settings.ts";
+import { mergeSettings } from "../shared/settings.ts";
 import type { WorkerRequest } from "./worker-client.ts";
 
 async function proxyBase(): Promise<string> {

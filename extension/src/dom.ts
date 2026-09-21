@@ -11,8 +11,8 @@
  * leaving the extraction code untested.
  */
 
-import type { TextBlock } from "../../shared/wire.ts";
-import { AD_IMAGE_ALT_CHARS } from "../../shared/wire.ts";
+import type { TextBlock } from "../shared/wire.ts";
+import { AD_IMAGE_ALT_CHARS } from "../shared/wire.ts";
 import type { ElementDescriptor } from "./heuristics.ts";
 import type { ImageKind } from "./heuristics.ts";
 import {

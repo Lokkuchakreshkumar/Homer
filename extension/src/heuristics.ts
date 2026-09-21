@@ -8,8 +8,8 @@
  * elements into these descriptors, and it is the only part that cannot be unit tested.
  */
 
-import type { AdCandidate, ImageKind, TextBlock } from "../../shared/wire.ts";
-import { AD_IMAGE_ALT_CHARS, AD_REMOVE_TEXT_CAP, AD_TEXT_SNIPPET_CHARS } from "../../shared/wire.ts";
+import type { AdCandidate, ImageKind, TextBlock } from "../shared/wire.ts";
+import { AD_IMAGE_ALT_CHARS, AD_REMOVE_TEXT_CAP, AD_TEXT_SNIPPET_CHARS } from "../shared/wire.ts";
 
 export { AD_IMAGE_ALT_CHARS, AD_REMOVE_TEXT_CAP, AD_TEXT_SNIPPET_CHARS };
 export type { ImageKind };

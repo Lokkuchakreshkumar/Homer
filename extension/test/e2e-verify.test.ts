@@ -20,7 +20,7 @@ import { toCandidate } from "../src/heuristics.ts";
 import { AdLedger } from "../src/content/ledger.ts";
 import { JevService } from "../../server/src/service.ts";
 import { StubJudge } from "../../server/src/stub-judge.ts";
-import { DEFAULT_SETTINGS, enabledCategories } from "../../shared/settings.ts";
+import { DEFAULT_SETTINGS, enabledCategories } from "../shared/settings.ts";
 import { ADS_LAYOUT, fixtureExpectations, measurerFor, parseFixture } from "./harness.ts";
 
 const service = new JevService({ judge: new StubJudge(), judgeReason: "e2e-verify" });

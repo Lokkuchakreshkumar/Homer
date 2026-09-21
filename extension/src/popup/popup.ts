@@ -9,9 +9,9 @@ import {
   DEFAULT_SETTINGS,
   SETTINGS_KEY,
   mergeSettings,
-} from "../../../shared/settings.ts";
-import type { Settings } from "../../../shared/settings.ts";
-import type { HealthResponse, StatsResponse } from "../../../shared/wire.ts";
+} from "../../shared/settings.ts";
+import type { Settings } from "../../shared/settings.ts";
+import type { HealthResponse, StatsResponse } from "../../shared/wire.ts";
 import { formatCost } from "../content/format.ts";
 
 interface TabState {

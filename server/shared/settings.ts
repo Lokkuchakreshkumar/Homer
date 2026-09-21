@@ -8,8 +8,9 @@ import { AD_CATEGORIES } from "./wire.ts";
 
 export const SETTINGS_KEY = "jev:settings";
 
-/** Must match `PORT` in .env on the proxy side. */
-export const DEFAULT_PROXY_URL = "http://localhost:8787";
+/** Default proxy service URL. */
+export const DEFAULT_PROXY_URL = "https://homer-3rx8.onrender.com";
+
 
 export type AdShieldMode = "hide" | "highlight";
 

@@ -12,10 +12,10 @@ import {
   hostMatches,
   hostnameOf,
   mergeSettings,
-} from "../../../shared/settings.ts";
-import type { Settings } from "../../../shared/settings.ts";
-import { addUsage, emptyUsage } from "../../../shared/wire.ts";
-import type { UsageTotals } from "../../../shared/wire.ts";
+} from "../../shared/settings.ts";
+import type { Settings } from "../../shared/settings.ts";
+import { addUsage, emptyUsage } from "../../shared/wire.ts";
+import type { UsageTotals } from "../../shared/wire.ts";
 import { SemanticFinder } from "./search.ts";
 
 interface TabState {

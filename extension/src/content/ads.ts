@@ -9,15 +9,15 @@
  * go ahead.
  */
 
-import type { AdAction, AdCandidate, AdCategory, UsageTotals } from "../../../shared/wire.ts";
-import { emptyUsage } from "../../../shared/wire.ts";
+import type { AdAction, AdCandidate, AdCategory, UsageTotals } from "../../shared/wire.ts";
+import { emptyUsage } from "../../shared/wire.ts";
 import { browserMeasurer, describeElement, scanForAds } from "../dom.ts";
 import type { ScanResult } from "../dom.ts";
 import { mayRemove, toCandidate } from "../heuristics.ts";
 import { AdLedger, type AdMark } from "./ledger.ts";
 import { judgeAdsViaWorker } from "../worker-client.ts";
-import { hostnameOf } from "../../../shared/settings.ts";
-import type { AdVerdict } from "../../../shared/wire.ts";
+import { hostnameOf } from "../../shared/settings.ts";
+import type { AdVerdict } from "../../shared/wire.ts";
 
 export interface AdScanOptions {
   /** Snapshot of settings at scan time. The scan does not re-read them mid-flight. */

@@ -14,7 +14,7 @@ import type {
   JudgeAdsResponse,
   SearchRequest,
   SearchResponse,
-} from "../../shared/wire.ts";
+} from "../shared/wire.ts";
 
 export type WorkerRequest =
   | { readonly type: "jev:judge-ads"; readonly request: JudgeAdsRequest }
