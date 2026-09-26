@@ -326,3 +326,35 @@ test("removes result motion when reduced motion is requested", async ({ page }) 
     .evaluate((element) => getComputedStyle(element).animationName);
   expect(animation).toBe("none");
 });
+
+test("keeps the redesign arc in order from hero proof to closing action", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("h1")).toHaveText(content.site.promise);
+  const heroFrame = page.getByRole("region", { name: content.heroWindow.ariaLabel });
+  await expect(heroFrame.getByText(content.heroFrame.query, { exact: false })).toBeVisible();
+  await expect(heroFrame.getByText(terrainFixture.answer.emphasis, { exact: true })).toBeVisible();
+
+  const comparison = page.locator(".problem-comparison");
+  const exactBox = await comparison.locator(".problem-card-exact").boundingBox();
+  const meaningBox = await comparison.locator(".problem-card-meaning").boundingBox();
+  expect(exactBox).not.toBeNull();
+  expect(meaningBox).not.toBeNull();
+  expect(exactBox?.x).toBeLessThan(meaningBox?.x ?? Number.POSITIVE_INFINITY);
+  await expect(comparison.getByText(content.problem.meaningTitle, { exact: true })).toBeVisible();
+
+  await expect(page.locator(".workflow-grid .workflow-card")).toHaveCount(content.how.steps.length);
+  for (const step of content.how.steps) {
+    await expect(page.locator("#how-it-works").getByText(step.title, { exact: true })).toBeVisible();
+  }
+
+  await expect(page.locator("#privacy").getByText(content.privacy.flow.proxyBody, { exact: false })).toBeVisible();
+  await expect(page.locator(".install-list li")).toHaveCount(content.install.steps.length);
+  await expect(page.locator(".faq-list details")).toHaveCount(content.faq.items.length);
+
+  const closing = page.locator(".closing-card");
+  await expect(closing.getByRole("link", { name: content.site.primaryAction })).toBeVisible();
+  await expect(closing.getByRole("link", { name: content.closing.documentation.label })).toHaveAttribute(
+    "href",
+    content.closing.documentation.href,
+  );
+});

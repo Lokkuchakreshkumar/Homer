@@ -189,6 +189,7 @@ a {
 .section-label {
   justify-content: center;
   margin-bottom: 26px;
+  color: var(--purple-deep);
 }
 
 .button {
