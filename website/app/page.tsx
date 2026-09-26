@@ -30,6 +30,39 @@ function HStamp({ className = "stamped-h" }: { readonly className?: string }) {
   );
 }
 
+function MockSidebar() {
+  return (
+    <aside className="mock-sidebar" aria-label={content.heroWindow.sidebarLabel}>
+      <p className="mock-sidebar-label">{content.heroWindow.sidebarLabel}</p>
+      <ul className="mock-outline">
+        {content.heroWindow.sidebarOutlineItems.map((item, index) => (
+          <li key={item} aria-current={index === 1 ? "true" : undefined}>
+            <span className="mock-outline-dot" aria-hidden="true" />
+            {item}
+          </li>
+        ))}
+      </ul>
+      <p className="mock-sidebar-label">{content.heroWindow.sidebarRecentLabel}</p>
+      <ul className="mock-recent">
+        {content.demo.queries.map((query) => {
+          const fixture =
+            query.fixture === null
+              ? null
+              : content.demo.fixtures.find((entry) => entry.key === query.fixture);
+          return (
+            <li key={query.key}>
+              <span className="mock-recent-text">{query.text}</span>
+              <span className="mock-recent-note">
+                {fixture ? fixture.passageNumber : content.heroWindow.sidebarNoMatch}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+    </aside>
+  );
+}
+
 export default function Home() {
   return (
     <>
@@ -76,45 +109,48 @@ export default function Home() {
                 </div>
                 <span className="browser-menu">{content.heroWindow.menuLabel}</span>
               </div>
-              <div className="hero-product-body">
-                <div className="hero-product-toolbar">
-                  <span className="toolbar-kicker">{content.heroWindow.toolbarLabel}</span>
-                  <span className="toolbar-status">
-                    <span className="status-dot" aria-hidden="true" />
-                    {content.heroFrame.signalLabel}
-                  </span>
-                </div>
-                <article className="hero-document">
-                  <div className="document-meta">
-                    <span>{content.heroWindow.pageMeta}</span>
-                    <span>{content.heroFrame.topLabel}</span>
+              <div className="hero-mock-body">
+                <MockSidebar />
+                <div className="hero-product-body">
+                  <div className="hero-product-toolbar">
+                    <span className="toolbar-kicker">{content.heroWindow.toolbarLabel}</span>
+                    <span className="toolbar-status">
+                      <span className="status-dot" aria-hidden="true" />
+                      {content.heroFrame.signalLabel}
+                    </span>
                   </div>
-                  <div className="hero-document-heading">
-                    <HStamp className="page-stamp" />
-                    <div>
-                      <p>{content.heroFrame.kicker}</p>
-                      <h2>{content.heroFrame.title}</h2>
+                  <article className="hero-document">
+                    <div className="document-meta">
+                      <span>{content.heroWindow.pageMeta}</span>
+                      <span>{content.heroFrame.topLabel}</span>
                     </div>
-                  </div>
-                  <p className="hero-document-copy">{content.heroFrame.copy}</p>
-                  <div className="hero-query">
-                    <Search size={16} aria-hidden="true" />
-                    <span>{content.heroFrame.query}</span>
-                    <span className="query-enter" aria-hidden="true">↵</span>
-                  </div>
-                  <div className="hero-answer">
-                    <span>{heroFixture.answerLabel}</span>
-                    <p>
-                      {heroFixture.answer.before}
-                      <mark>{heroFixture.answer.emphasis}</mark>
-                      {heroFixture.answer.after}
-                    </p>
-                  </div>
-                  <div className="hero-document-footer">
-                    <span>{content.heroWindow.footerLabel}</span>
-                    <span>{content.heroWindow.promptLabel}</span>
-                  </div>
-                </article>
+                    <div className="hero-document-heading">
+                      <HStamp className="page-stamp" />
+                      <div>
+                        <p>{content.heroFrame.kicker}</p>
+                        <h2>{content.heroFrame.title}</h2>
+                      </div>
+                    </div>
+                    <p className="hero-document-copy">{content.heroFrame.copy}</p>
+                    <div className="hero-query">
+                      <Search size={16} aria-hidden="true" />
+                      <span>{content.heroFrame.query}</span>
+                      <span className="query-enter" aria-hidden="true">↵</span>
+                    </div>
+                    <div className="hero-answer">
+                      <span>{heroFixture.answerLabel}</span>
+                      <p>
+                        {heroFixture.answer.before}
+                        <mark>{heroFixture.answer.emphasis}</mark>
+                        {heroFixture.answer.after}
+                      </p>
+                    </div>
+                    <div className="hero-document-footer">
+                      <span>{content.heroWindow.footerLabel}</span>
+                      <span>{content.heroWindow.promptLabel}</span>
+                    </div>
+                  </article>
+                </div>
               </div>
             </div>
           </div>
@@ -138,6 +174,14 @@ export default function Home() {
         </section>
 
         <section className="section section-problem" id="problem" aria-labelledby="problem-title">
+          <div className="site-shell intro-split" aria-label={content.problem.label}>
+            <p className="intro-split-label">{content.problem.label}</p>
+            <div className="intro-split-grid">
+              <p>{content.problem.body}</p>
+              <p>{content.reader.body}</p>
+            </div>
+          </div>
+
           <div className="site-shell centered-statement">
             <SectionLabel>{content.problem.label}</SectionLabel>
             <h2 id="problem-title">{content.problem.displayTitle}</h2>
@@ -195,6 +239,24 @@ export default function Home() {
                 <ArrowDown size={15} aria-hidden="true" />
               </a>
               <span>{content.hero.note}</span>
+            </div>
+          </div>
+
+          <div className="site-shell tilt-strip" aria-hidden="true">
+            <div className="tilt-grid">
+              {content.demo.queries.map((query) => (
+                <span key={query.key} className="tilt-chip">
+                  {query.text}
+                </span>
+              ))}
+              <span className="tilt-chip tilt-chip-keys">
+                {content.hero.shortcut.primaryKey} + {content.hero.shortcut.secondaryKey}
+              </span>
+              {content.hero.facts.map((fact) => (
+                <span key={fact} className="tilt-chip tilt-chip-faint">
+                  {fact}
+                </span>
+              ))}
             </div>
           </div>
 
@@ -434,7 +496,10 @@ export default function Home() {
 
       <footer className="site-footer">
         <div className="site-shell footer-inner">
-          <span>{content.footer.status}</span>
+          <div className="footer-brand">
+            <HStamp className="stamped-h" />
+            <span>{content.footer.status}</span>
+          </div>
           <nav aria-label={content.footer.navLabel}>
             {content.footer.links.map((link) => (
               <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer">

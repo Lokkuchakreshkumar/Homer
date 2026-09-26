@@ -331,8 +331,11 @@ test("keeps the redesign arc in order from hero proof to closing action", async 
   await page.goto("/");
   await expect(page.locator("h1")).toHaveText(content.site.promise);
   const heroFrame = page.getByRole("region", { name: content.heroWindow.ariaLabel });
-  await expect(heroFrame.getByText(content.heroFrame.query, { exact: false })).toBeVisible();
+  await expect(heroFrame.locator(".hero-query").getByText(content.heroFrame.query, { exact: false })).toBeVisible();
   await expect(heroFrame.getByText(terrainFixture.answer.emphasis, { exact: true })).toBeVisible();
+  await expect(
+    heroFrame.getByRole("complementary", { name: content.heroWindow.sidebarLabel }),
+  ).toContainText(content.heroWindow.sidebarRecentLabel);
 
   const comparison = page.locator(".problem-comparison");
   const exactBox = await comparison.locator(".problem-card-exact").boundingBox();
