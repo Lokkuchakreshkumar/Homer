@@ -2,9 +2,14 @@ import {
   ArrowDown,
   ArrowRight,
   ArrowUpRight,
+  Archive,
   Check,
+  Database,
   ExternalLink,
+  FileText,
+  Layers,
   LockKeyhole,
+  Map,
   MousePointer2,
   Search,
   ShieldCheck,
@@ -30,9 +35,18 @@ function HStamp({ className = "stamped-h" }: { readonly className?: string }) {
   );
 }
 
+const mockIcons = [FileText, Layers, Database, Archive, Map, Search];
+
 function MockSidebar() {
   return (
     <aside className="mock-sidebar" aria-label={content.heroWindow.sidebarLabel}>
+      <div className="mock-icon-grid" aria-hidden="true">
+        {mockIcons.map((Icon, index) => (
+          <span key={index} className={`mock-app-icon mock-app-${index + 1}`}>
+            <Icon size={18} />
+          </span>
+        ))}
+      </div>
       <p className="mock-sidebar-label">{content.heroWindow.sidebarLabel}</p>
       <ul className="mock-outline">
         {content.heroWindow.sidebarOutlineItems.map((item, index) => (
@@ -79,7 +93,7 @@ export default function Home() {
 
       <main id="top" tabIndex={-1}>
         <section className="hero" aria-labelledby="hero-title">
-          <div className="site-shell hero-inner">
+          <div className="hero-canvas">
             <SectionLabel>{content.site.category}</SectionLabel>
             <h1 id="hero-title">{content.site.promise}</h1>
             <p className="hero-support">{content.site.support}</p>
@@ -95,7 +109,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="site-shell hero-product-wrap">
+          <div className="hero-mock-wrap">
             <div className="hero-product-frame" role="region" aria-label={content.heroWindow.ariaLabel}>
               <div className="browser-bar">
                 <div className="window-dots" aria-hidden="true">
@@ -155,7 +169,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="site-shell hero-strip" aria-label={content.hero.shortcut.ariaLabel}>
+          <div className="hero-strip" aria-label={content.hero.shortcut.ariaLabel}>
             <div className="hero-strip-intro">
               <span>{content.hero.shortcut.label}</span>
               <strong>{content.hero.shortcut.note}</strong>
