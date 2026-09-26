@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f9fafb"/>
+  <circle cx="1080" cy="40" r="260" fill="#e0f2fe" opacity=".65"/>
+  <circle cx="70" cy="610" r="230" fill="#e0f2fe" opacity=".72"/>
+  <rect x="42" y="42" width="1116" height="546" rx="30" fill="#ffffff" stroke="#333333" stroke-width="3"/>
+  <path d="M42 112h1116" stroke="#333333" stroke-width="2" opacity=".18"/>
+  <circle cx="91" cy="77" r="15" fill="#2563eb"/>
+  <circle cx="132" cy="77" r="15" fill="#3b82f6"/>
+  <circle cx="173" cy="77" r="15" fill="#1d4ed8"/>
+  <rect x="77" y="139" width="1046" height="394" rx="22" fill="#e0f2fe" stroke="#333333" stroke-width="2"/>
+  <rect x="102" y="164" width="996" height="48" rx="12" fill="#ffffff" stroke="#333333" stroke-width="2"/>
+  <circle cx="128" cy="188" r="7" fill="#2563eb"/>
+  <rect x="150" y="181" width="440" height="14" rx="7" fill="#4b5563" opacity=".7"/>
+  <text x="78" y="276" fill="#333333" font-family="Arial, Helvetica, sans-serif" font-size="67" font-weight="700" letter-spacing="-4">Find the exact idea</text>
+  <text x="78" y="351" fill="#333333" font-family="Arial, Helvetica, sans-serif" font-size="67" font-weight="700" letter-spacing="-4">on any page,</text>
+  <text x="78" y="426" fill="#1d4ed8" font-family="Arial, Helvetica, sans-serif" font-size="67" font-weight="700" letter-spacing="-4">by meaning.</text>
+  <rect x="773" y="244" width="296" height="205" rx="17" fill="#ffffff" stroke="#333333" stroke-width="2"/>
+  <rect x="773" y="244" width="296" height="36" rx="17" fill="#171717"/>
+  <path d="M773 280h296" stroke="#171717" stroke-width="2"/>
+  <text x="794" y="268" fill="#f9fafb" font-family="monospace" font-size="11" letter-spacing="1">FIELD SAMPLE / PAGE 08</text>
+  <text x="794" y="322" fill="#333333" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700">Route safety</text>
+  <rect x="794" y="344" width="254" height="70" rx="10" fill="#e0f2fe" stroke="#2563eb" stroke-width="2"/>
+  <text x="808" y="367" fill="#1d4ed8" font-family="monospace" font-size="10" font-weight="700">04 / STRONG ANSWER</text>
+  <text x="808" y="391" fill="#333333" font-family="Georgia, serif" font-size="14">Stereo vision marks steep slopes</text>
+  <text x="808" y="409" fill="#333333" font-family="Georgia, serif" font-size="14">and loose ground as no-go zones.</text>
+  <text x="78" y="518" fill="#4b5563" font-family="monospace" font-size="13" letter-spacing="1">A LOCAL DEMO / A CLEARER WAY TO READ THE PAGE</text>
+  <rect x="1005" y="476" width="70" height="70" rx="20" fill="#e0f2fe" stroke="#333333" stroke-width="2"/>
+  <path d="M1025 492v40M1055 492v40M1025 512h30" fill="none" stroke="#1d4ed8" stroke-width="5" stroke-linecap="square"/>
+</svg>

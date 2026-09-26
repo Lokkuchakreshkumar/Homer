@@ -1,0 +1,44 @@
+{
+  "name": "homer-website",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.6.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "lint": "eslint .",
+    "typecheck": "next typegen && tsc --noEmit",
+    "test": "npm run test:unit && npm run build && playwright test && npm run test:links:check",
+    "test:unit": "npm run test:state && npm run test:metadata && npm run test:styles && npm run test:links:unit",
+    "test:state": "node --test --experimental-strip-types tests/state.test.ts",
+    "test:metadata": "node --test --experimental-strip-types tests/metadata.test.ts",
+    "test:styles": "node --test --experimental-strip-types tests/styles.test.ts",
+    "test:links:unit": "node --test --experimental-strip-types tests/link-checker.test.ts",
+    "build": "next build",
+    "test:browser": "npm run build && playwright test",
+    "test:links": "npm run build && npm run test:links:check",
+    "test:links:check": "node scripts/check-links.mjs",
+    "test:links:external": "npm run build && CHECK_EXTERNAL_LINKS=1 npm run test:links:check"
+  },
+  "dependencies": {
+    "lucide-react": "1.48.0",
+    "motion": "13.4.3",
+    "next": "16.3.6",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "26.6.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.3.6",
+    "linkinator": "8.1.0",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3"
+  }
+}
