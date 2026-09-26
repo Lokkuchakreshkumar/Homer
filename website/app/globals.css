@@ -1514,7 +1514,7 @@ mark {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 28px;
-  margin-top: 82px;
+  margin-top: 64px;
 }
 
 .workflow-card {
@@ -1684,11 +1684,11 @@ mark {
 }
 
 .workflow-card h3 {
-  margin: 28px 0 11px;
-  font-size: 1.55rem;
-  font-weight: 650;
-  letter-spacing: -0.05em;
-  line-height: 1;
+  margin: 24px 0 10px;
+  font-size: 1.4rem;
+  font-weight: 580;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
 }
 
 .workflow-card p {
@@ -1785,7 +1785,7 @@ mark {
 
 .privacy-panel {
   max-width: 1120px;
-  margin: 80px auto 0;
+  margin: 64px auto 0;
   border-top: 1px solid var(--trust-line);
   padding-top: 28px;
 }
