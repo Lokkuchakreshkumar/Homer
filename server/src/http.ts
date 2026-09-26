@@ -9,7 +9,6 @@
 import { createServer } from "node:http";
 import type { IncomingMessage, Server, ServerResponse } from "node:http";
 import { readFile } from "node:fs/promises";
-import { timingSafeEqual } from "node:crypto";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { HealthResponse, JudgeAdsRequest, SearchRequest } from "../shared/wire.ts";
@@ -49,29 +48,10 @@ function statusOf(cause: unknown): number {
   return 500;
 }
 
-/**
- * Optional shared secret for the billable routes.
- *
- * A deployed proxy binds 0.0.0.0, so without this it is an open, unmetered relay on the
- * API key: anyone who learns the URL can spend it. Setting HOMER_TOKEN turns that off —
- * `x-homer-token` must match, compared in constant time. Left unset, the proxy stays
- * open, which is the right behaviour for the loopback-only local case.
- */
-function tokenAccepted(req: IncomingMessage): boolean {
-  const expected = (process.env["HOMER_TOKEN"] ?? "").trim();
-  if (expected === "") return true;
-  const header = req.headers["x-homer-token"];
-  const supplied = Array.isArray(header) ? header[0] ?? "" : (header ?? "");
-  const a = Buffer.from(supplied);
-  const b = Buffer.from(expected);
-  if (a.length !== b.length) return false;
-  return timingSafeEqual(a, b);
-}
-
 function applyCors(res: ServerResponse, origin: string | undefined): void {
   res.setHeader("Access-Control-Allow-Origin", origin ?? "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "content-type, x-homer-token");
+  res.setHeader("Access-Control-Allow-Headers", "content-type");
   res.setHeader("Access-Control-Max-Age", "600");
   res.setHeader("Vary", "Origin");
 }
@@ -275,21 +255,6 @@ async function handle(
     if (req.method === "GET" && url.pathname.startsWith("/fixtures/")) {
       await serveFixture(res, url.pathname);
       return;
-    }
-
-    // Only the two routes that spend money are gated. /health and /stats stay open so the
-    // platform health check and the popup status line keep working without the secret.
-    if (
-      req.method === "POST" &&
-      (url.pathname === "/v1/ads/judge" || url.pathname === "/v1/search")
-    ) {
-      if (!tokenAccepted(req)) {
-        sendJson(res, 401, {
-          error: "unauthorized",
-          message: "set the proxy token in the Homer popup (x-homer-token)",
-        });
-        return;
-      }
     }
 
     if (req.method === "POST" && url.pathname === "/v1/ads/judge") {

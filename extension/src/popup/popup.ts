@@ -41,7 +41,6 @@ const debounceInput = $<HTMLInputElement>("debounce");
 const debounceVal = $("debounce-val");
 
 const proxyUrlInput = $<HTMLInputElement>("proxy-url");
-const proxyTokenInput = $<HTMLInputElement>("proxy-token");
 const neverSendInput = $<HTMLTextAreaElement>("never-send");
 const nativeFindInput = $<HTMLTextAreaElement>("native-find");
 const telemetryInfo = $("telemetry-info");
@@ -183,7 +182,6 @@ async function boot(): Promise<void> {
   debounceVal.textContent = `${settings.semanticFind.debounceMs} ms`;
 
   proxyUrlInput.value = settings.proxyUrl;
-  proxyTokenInput.value = settings.proxyToken;
   neverSendInput.value = settings.neverSendHosts.join("\n");
   nativeFindInput.value = settings.nativeFindHosts.join("\n");
 
@@ -256,13 +254,6 @@ async function boot(): Promise<void> {
   proxyUrlInput.addEventListener("change", () => {
     const nextUrl = proxyUrlInput.value.trim() || DEFAULT_SETTINGS.proxyUrl;
     void saveSettings({ proxyUrl: nextUrl }).then((updated) => {
-      void checkProxyHealth(updated);
-    });
-  });
-
-  proxyTokenInput.addEventListener("change", () => {
-    const nextToken = proxyTokenInput.value.trim();
-    void saveSettings({ proxyToken: nextToken }).then((updated) => {
       void checkProxyHealth(updated);
     });
   });

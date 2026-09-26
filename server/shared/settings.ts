@@ -43,8 +43,6 @@ export interface Settings {
     debounceMs: number;
   };
   proxyUrl: string;
-  /** Shared secret for a deployed proxy. Empty means the proxy is open (loopback-only). */
-  proxyToken: string;
   /**
    * Hostnames whose content is never sent to the proxy. Substring match, so `bank`
    * covers `mybank.com`. Feature 1 still works locally on heuristics alone.
@@ -68,7 +66,6 @@ export const DEFAULT_SETTINGS: Settings = {
     debounceMs: 300,
   },
   proxyUrl: DEFAULT_PROXY_URL,
-  proxyToken: "",
   neverSendHosts: [],
   nativeFindHosts: ["docs.google.com", "notion.so", "vscode.dev", "github.dev"],
 };
@@ -82,7 +79,6 @@ export function mergeSettings(stored: unknown): Settings {
   if (typeof src.proxyUrl === "string" && src.proxyUrl.trim() !== "") {
     base.proxyUrl = src.proxyUrl.trim().replace(/\/+$/, "");
   }
-  if (typeof src.proxyToken === "string") base.proxyToken = src.proxyToken.trim();
   if (Array.isArray(src.neverSendHosts)) base.neverSendHosts = src.neverSendHosts.map(String);
   if (Array.isArray(src.nativeFindHosts)) base.nativeFindHosts = src.nativeFindHosts.map(String);
 

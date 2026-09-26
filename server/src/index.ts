@@ -12,12 +12,6 @@ import { createJudge } from "./model.ts";
 import { JevService } from "./service.ts";
 import { createJevServer, VERSION } from "./http.ts";
 
-const port = Number(process.env["PORT"] ?? 8787);
-if (!Number.isInteger(port) || port <= 0 || port > 65535) {
-  console.error(`[jev-proxy] PORT is not a valid port number: ${process.env["PORT"] ?? ""}`);
-  process.exit(1);
-}
-
 // A container is detected by the platform's own marker, or by NODE_ENV=production, which the
 // Dockerfile sets. Both mean "reachable", so both get 0.0.0.0. Local dev stays on loopback.
 const inContainer =
@@ -26,7 +20,41 @@ const inContainer =
   process.env["NODE_ENV"] === "production" ||
   process.env["DYNO"] !== undefined;
 
-const host = process.env["HOST"]?.trim() || (inContainer ? "0.0.0.0" : "127.0.0.1");
+const LOOPBACK = new Set(["127.0.0.1", "localhost", "::1"]);
+const requested = process.env["HOST"]?.trim() ?? "";
+
+// Inside a container a loopback HOST is always a misconfiguration, not an intent: the platform
+// scans for a listener on 0.0.0.0 and reports "Detected open ports on localhost" without one. It
+// is easy to set by carrying a local HOST=127.0.0.1 into the dashboard, so it is overridden
+// rather than obeyed, and the override is logged instead of being silent.
+let host = requested;
+if (inContainer && (requested === "" || LOOPBACK.has(requested))) {
+  if (requested !== "") {
+    console.warn(
+      `[jev-proxy] HOST=${requested} ignored inside a container; binding 0.0.0.0 so the service is reachable`,
+    );
+  }
+  host = "0.0.0.0";
+} else if (requested === "") {
+  host = "127.0.0.1";
+}
+
+// The platform routes to the port it injects. If nothing arrived in a container, fall back to
+// Render's own default rather than the local dev port, so the two agree without configuration.
+if (process.env["PORT"] === undefined || process.env["PORT"] === "") {
+  if (inContainer) {
+    console.warn("[jev-proxy] PORT was not injected; defaulting to 10000");
+    process.env["PORT"] = "10000";
+  } else {
+    process.env["PORT"] = "8787";
+  }
+}
+
+const port = Number(process.env["PORT"]);
+if (!Number.isInteger(port) || port <= 0 || port > 65535) {
+  console.error(`[jev-proxy] PORT is not a valid port number: ${process.env["PORT"]}`);
+  process.exit(1);
+}
 
 const { judge, reason } = createJudge();
 const service = new JevService({ judge, judgeReason: reason });

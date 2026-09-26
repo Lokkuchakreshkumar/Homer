@@ -10,21 +10,17 @@
 import { mergeSettings } from "../shared/settings.ts";
 import type { WorkerRequest } from "./worker-client.ts";
 
-async function proxySettings(): Promise<{ proxyUrl: string; proxyToken: string }> {
+async function proxyBase(): Promise<string> {
   const stored = await chrome.storage.local.get("jev:settings");
-  const settings = mergeSettings(stored["jev:settings"]);
-  return { proxyUrl: settings.proxyUrl, proxyToken: settings.proxyToken };
+  return mergeSettings(stored["jev:settings"]).proxyUrl;
 }
 
-async function postJson<T>(url: string, body: unknown, token: string): Promise<T> {
+async function postJson<T>(url: string, body: unknown): Promise<T> {
   let response: Response;
   try {
     response = await fetch(url, {
       method: "POST",
-      headers: token === "" ? { "content-type": "application/json" } : {
-        "content-type": "application/json",
-        "x-homer-token": token,
-      },
+      headers: { "content-type": "application/json" },
       body: JSON.stringify(body),
     });
   } catch (cause) {
@@ -77,11 +73,9 @@ chrome.runtime.onMessage.addListener(
 
     void (async () => {
       try {
-        const { proxyUrl, proxyToken } = await proxySettings();
         const payload = await postJson<{ verdicts?: { action: string }[] }>(
-          `${proxyUrl}${path}`,
+          `${await proxyBase()}${path}`,
           request,
-          proxyToken,
         );
         const tabId = sender.tab?.id;
         if (typeof tabId === "number" && Array.isArray(payload.verdicts)) {

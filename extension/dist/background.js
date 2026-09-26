@@ -18,7 +18,6 @@ var DEFAULT_SETTINGS = {
     fontSize: "medium"
   },
   proxyUrl: DEFAULT_PROXY_URL,
-  proxyToken: "",
   neverSendHosts: [],
   nativeFindHosts: ["docs.google.com", "notion.so", "vscode.dev", "github.dev"]
 };
@@ -30,7 +29,6 @@ function mergeSettings(stored) {
   if (typeof src.proxyUrl === "string" && src.proxyUrl.trim() !== "") {
     base.proxyUrl = src.proxyUrl.trim().replace(/\/+$/, "");
   }
-  if (typeof src.proxyToken === "string") base.proxyToken = src.proxyToken.trim();
   if (Array.isArray(src.neverSendHosts)) base.neverSendHosts = src.neverSendHosts.map(String);
   if (Array.isArray(src.nativeFindHosts)) base.nativeFindHosts = src.nativeFindHosts.map(String);
   const ads = src.adBlocking;
@@ -64,20 +62,16 @@ function mergeSettings(stored) {
 }
 
 // src/background.ts
-async function proxySettings() {
+async function proxyBase() {
   const stored = await chrome.storage.local.get("jev:settings");
-  const settings = mergeSettings(stored["jev:settings"]);
-  return { proxyUrl: settings.proxyUrl, proxyToken: settings.proxyToken };
+  return mergeSettings(stored["jev:settings"]).proxyUrl;
 }
-async function postJson(url, body, token) {
+async function postJson(url, body) {
   let response;
   try {
     response = await fetch(url, {
       method: "POST",
-      headers: token === "" ? { "content-type": "application/json" } : {
-        "content-type": "application/json",
-        "x-homer-token": token
-      },
+      headers: { "content-type": "application/json" },
       body: JSON.stringify(body)
     });
   } catch (cause) {
@@ -122,11 +116,9 @@ chrome.runtime.onMessage.addListener(
     const request = typed.request;
     void (async () => {
       try {
-        const { proxyUrl, proxyToken } = await proxySettings();
         const payload = await postJson(
-          `${proxyUrl}${path}`,
-          request,
-          proxyToken
+          `${await proxyBase()}${path}`,
+          request
         );
         const tabId = sender.tab?.id;
         if (typeof tabId === "number" && Array.isArray(payload.verdicts)) {
